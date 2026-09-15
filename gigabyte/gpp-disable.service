@@ -1,0 +1,7 @@
+[Service]
+ExecStart=/bin/sh -c '/bin/echo GPP0 > /proc/acpi/wakeup'
+ExecStart=/bin/sh -c '/bin/echo GPP8 > /proc/acpi/wakeup'
+Type=oneshot
+
+[Install]
+WantedBy=multi-user.target
