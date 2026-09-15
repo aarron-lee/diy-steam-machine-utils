@@ -15,7 +15,7 @@ services=("cec-onboot" "cec-onpowerff" "cec-onsleep")
 
 for service in "${services[@]}"; do
     sudo systemctl disable --now "$service"
-    sudo rm -f "/etc/systemd/system/$service"
+    sudo rm -f "/etc/systemd/system/$service.service"
 done
 
 rm -f $CEC_BIN
