@@ -1,4 +1,4 @@
-# Gigabyte motherboard workaround
+# Gigabyte motherboard suspend-resume workaround
 
 Credit to https://blog.rxbrad.com/fixing-sleep-issues-with-bazzite-on-a-gigabyte-motherboard/ for workaround
 
