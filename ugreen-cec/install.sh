@@ -55,16 +55,62 @@ else
     exit 1
 fi
 
-services=("cec-onboot" "cec-onpoweroff" "cec-onsleep")
+prompt_options() {
+  local -n _result_array=$1
+
+  _result_array=()
+
+  local questions=(
+    "Do you want CEC to turn on your TV on boot?"
+    "Do you want CEC to turn off your TV on power off?"
+    "Do you want CEC to turn on/off your TV on sleep/wake?"
+  )
+  local values=(
+    "cec-onboot"
+    "cec-onpoweroff"
+    "cec-onsleep"
+  )
+
+  # Ordered loop through array indices
+  for i in "${!questions[@]}"; do
+    local question="${questions[i]}"
+    local value="${values[i]}"
+
+    while true; do
+      read -p "$question (y/n): " answer
+      case "$answer" in
+        [Yy]* )
+          _result_array+=("$value")
+          break
+          ;;
+        [Nn]* )
+          break
+          ;;
+        * )
+          echo "Please answer y or n."
+          ;;
+      esac
+    done
+  done
+}
+
+services=()
+
+prompt_options services
+
+# services=("cec-onboot" "cec-onpoweroff" "cec-onsleep")
 
 echo "----------------------------"
 echo "Removing old versions for cec, assuming it was previously installed"
 echo "Note: You can ignore any error messages until the INSTALL step"
 echo "----------------------------"
 
-for service in "${services[@]}"; do
-    sudo systemctl disable --now "$service"
-    sudo rm -f "/etc/systemd/system/$service.service"
+allServices=("cec-onboot" "cec-onpoweroff" "cec-onsleep")
+
+for s in "${allServices[@]}"; do
+    # cleanup any old prior services
+    sudo systemctl disable --now "$s"
+    sudo rm -f "/etc/systemd/system/$s.service"
 done
 
 rm -f $CEC_BIN
